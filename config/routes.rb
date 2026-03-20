@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   
+  # backend
+  namespace :api do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   
-  root "destinations#index"
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
@@ -45,5 +46,9 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard', to: 'dashboards#index', as: 'dashboard'
+  end
+  root "destinations#index"
 
+  # frontend
+  get '/*path' => 'destinations#index'
 end
