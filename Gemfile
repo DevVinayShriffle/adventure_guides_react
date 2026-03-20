@@ -71,3 +71,7 @@ gem "jsbundling-rails", "~> 1.3"
 gem "tailwindcss-rails", "~> 4.4"
 gem 'pg'
 gem 'active_model_serializers'
+gem "bcrypt", "~> 3.1.7"
+gem "byebug"
+gem 'devise'
+gem 'devise-jwt'
