@@ -1,10 +1,17 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./landing/Home";
+import SignUp from "./auth/SignUp";
+import Login from "./auth/Login";
 
 const App = () => {
   return (
-    <div>
-      <h1 className="bg-red-400">Hello from react !!! doing changes to check </h1>
-    </div>
+    <Routes>
+      <Route path='/' element={<Home />}>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+      </Route>
+    </Routes>
   )
 };
 

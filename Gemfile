@@ -78,3 +78,5 @@ gem 'devise-jwt'
 gem 'sidekiq'
 gem "redis", ">= 4.0.1"
 # gem 'whenever', require: false
+gem 'rack-cors'
+gem "vite_rails"
