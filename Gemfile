@@ -75,3 +75,6 @@ gem "bcrypt", "~> 3.1.7"
 gem "byebug"
 gem 'devise'
 gem 'devise-jwt'
+gem 'sidekiq'
+gem "redis", ">= 4.0.1"
+# gem 'whenever', require: false
