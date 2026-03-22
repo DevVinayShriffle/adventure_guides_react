@@ -45,5 +45,36 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard', to: 'dashboards#index', as: 'dashboard'
+  
+  get '*path', to: 'destinations#index', constraints: ->(req) do
+    !req.xhr? && req.format.html?
+  end
 
 end
+
+# Rails.application.routes.draw do
+
+#   require 'sidekiq/web'
+#   mount Sidekiq::Web => '/sidekiq'
+
+#   root "destinations#index"
+
+#   #  API routes
+#   namespace :api do
+#     namespace :v1 do
+#       devise_for :users
+#       resources :destinations, only: [:index, :show]
+#     end
+#   end
+
+#   # devise_for :users, path: ''
+
+#   # Existing web routes (optional if still used)
+#   resources :destinations, only: [:index, :show]
+
+#   # React catch-all (must be last)
+#   get '*path', to: 'destinations#index', constraints: ->(req) do
+#     !req.xhr? && req.format.html?
+#   end
+
+# end
