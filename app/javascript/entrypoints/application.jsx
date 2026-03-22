@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '../components/App'; // Your main React component
+import { BrowserRouter } from "react-router-dom"
 
 document.addEventListener('DOMContentLoaded', () => {
   const rootElement = document.getElementById('root'); // Make sure this #app exists in your Rails layout
@@ -9,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (rootElement) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
   }
 });

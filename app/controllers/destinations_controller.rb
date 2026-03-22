@@ -11,7 +11,11 @@ class DestinationsController < ApplicationController
     @destinations = Destination.all.order(created_at: :desc)
     
     if @destinations.present?
-      render json: @destinations, status: :ok
+      respond_to do |format|
+        format.html   # 👈 this renders React page
+        format.json { render json: @destinations }
+      end
+      # render json: @destinations, status: :ok
     else
       render json: { message: "No destinations found." }, status: :ok
     end

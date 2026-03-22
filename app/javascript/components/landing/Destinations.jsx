@@ -2,41 +2,31 @@ import React, { useEffect, useState } from 'react'
 import Destination from './Destination'
 import axios from 'axios'
 
-async function Destinations() {
-  const [destinations, setDestinations] = useState(null)
-  console.log(destinations)
-  try{
-    useEffect(()=>{
-    axios.get(`/destinations`)
-        .then(response => setDestinations(response.data))
-        .catch(error => console.error('Error fetching data:', error));
-  }, []);
-    console.log('Fetched articles:', data);
-  } catch (e) {
-    console.error(e)
-  }
-  // useEffect(()=>{
-  //   axios.get(`/destinations`)
-  //       .then(response => setDestinations(response.data))
-  //       .catch(error => console.error('Error fetching data:', error));
-  // }, []);
-  console.log("destinations data: ", destinations)
+function Destinations() {
+  const [destinations, setDestinations] = useState([])
+
+  useEffect(() => {
+    axios.get('/destinations.json')
+      .then(response => {
+        console.log("API DATA:", response.data)
+        setDestinations(response.data)
+      })
+      .catch(error => console.error('Error fetching data:', error))
+  }, [])
 
   return (
-    <>
-      <div className="px-20 py-10">
-
-        <div className="mb-8">
-          <p className="text-2xl font-semibold">Start Your Adventure</p>
-          <p className="text-gray-500">Here’s Our Recommended Travel Destinations</p>
-        </div>
-
-        <div id="destinations" className="grid grid-cols-3 gap-6">
-          <Destination />
-        </div>
-
+    <div className="px-20 py-10">
+      <div className="mb-8">
+        <p className="text-2xl font-semibold">Start Your Adventure</p>
+        <p className="text-gray-500">Here’s Our Recommended Travel Destinations</p>
       </div>
-    </>
+
+      <div className="grid grid-cols-3 gap-6">
+        {destinations.map((destination) => (
+          <Destination key={destination.id} destination={destination} />
+        ))}
+      </div>
+    </div>
   )
 }
 
