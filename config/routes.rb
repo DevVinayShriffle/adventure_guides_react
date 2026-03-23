@@ -136,8 +136,7 @@ Rails.application.routes.draw do
   end
   
   # Frontend routes for React
-  get '*path', to: 'destinations#index', constraints: ->(req) do
-    !req.xhr? && req.format.html?
-  end
+  get '*path', to: 'home#index', constraints: ->(req) { !req.xhr? && req.format.html? }
+
   get '/home', to: 'home#index', as: 'home'
 end
