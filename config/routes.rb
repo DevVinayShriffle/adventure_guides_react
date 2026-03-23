@@ -1,56 +1,56 @@
-Rails.application.routes.draw do
+# Rails.application.routes.draw do
 
-  require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
+#   require 'sidekiq/web'
+#   mount Sidekiq::Web => '/sidekiq'
   
-  root "destinations#index"
-  devise_for :users, path: '', path_names: {
-    sign_in: 'login',
-    sign_out: 'logout',
-    registration: 'signup'
-  }, controllers: {
-    registrations: 'users/registrations',
-    sessions: 'users/sessions',
-    passwords: 'users/passwords'
-  }
+#   root "destinations#index"
+#   devise_for :users, path: '', path_names: {
+#     sign_in: 'login',
+#     sign_out: 'logout',
+#     registration: 'signup'
+#   }, controllers: {
+#     registrations: 'users/registrations',
+#     sessions: 'users/sessions',
+#     passwords: 'users/passwords'
+#   }
 
-  resources :destinations, only: [:index, :show] do
-    resources :buses, only: [:index]
-  end
+#   resources :destinations, only: [:index, :show] do
+#     resources :buses, only: [:index]
+#   end
 
-  resources :buses, only: [:index, :show]
+#   resources :buses, only: [:index, :show]
 
-  resources :schedules, only: [:index, :show]
+#   resources :schedules, only: [:index, :show]
 
-  resources :bookings, only: [:create, :index, :show, :new] do
-    patch :cancel, on: :member
+#   resources :bookings, only: [:create, :index, :show, :new] do
+#     patch :cancel, on: :member
 
-    collection do
-      get :upcoming
-      get :cancelled
-    end
-  end
+#     collection do
+#       get :upcoming
+#       get :cancelled
+#     end
+#   end
 
-  namespace :admin do
-    resources :destinations
-    get :users
-  end
+#   namespace :admin do
+#     resources :destinations
+#     get :users
+#   end
 
-  namespace :guide do
-    resources :buses do
-      resources :bus_stops
-      # resources :schedules
-    end
-    resources :schedules
-  end
+#   namespace :guide do
+#     resources :buses do
+#       resources :bus_stops
+#       # resources :schedules
+#     end
+#     resources :schedules
+#   end
 
-  get '/dashboard', to: 'dashboards#index', as: 'dashboard'
+#   get '/dashboard', to: 'dashboards#index', as: 'dashboard'
   
-  get '*path', to: 'destinations#index', constraints: ->(req) do
-    !req.xhr? && req.format.html?
-  end
+#   get '*path', to: 'destinations#index', constraints: ->(req) do
+#     !req.xhr? && req.format.html?
+#   end
 
-end
+# end
 
 # Rails.application.routes.draw do
 
@@ -78,3 +78,64 @@ end
 #   end
 
 # end
+
+Rails.application.routes.draw do
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+  
+  # root "destinations#index"
+  root "home#index"
+  #API routes for backend
+  namespace :api do
+    namespace :v1 do
+      devise_for :users, path: '', path_names: {
+        sign_in: 'login',
+        sign_out: 'logout',
+        registration: 'signup'
+      }, controllers: {
+        registrations: 'users/registrations',
+        sessions: 'users/sessions',
+        passwords: 'users/passwords'
+      }
+
+      resources :destinations, only: [:index, :show], controller: '/destinations' do
+        resources :buses, only: [:index]
+      end
+
+      resources :buses, only: [:index, :show]
+
+      resources :schedules, only: [:index, :show]
+
+      resources :bookings, only: [:create, :index, :show, :new] do
+        patch :cancel, on: :member
+
+        collection do
+          get :upcoming
+          get :cancelled
+        end
+      end
+
+      namespace :admin do
+        resources :destinations
+        get :users
+      end
+
+      namespace :guide do
+        resources :buses do
+          resources :bus_stops
+          # resources :schedules
+        end
+        resources :schedules
+      end
+
+      get '/dashboard', to: 'dashboards#index', as: 'dashboard'
+    end
+  end
+  
+  # Frontend routes for React
+  get '*path', to: 'destinations#index', constraints: ->(req) do
+    !req.xhr? && req.format.html?
+  end
+  get '/home', to: 'home#index', as: 'home'
+end

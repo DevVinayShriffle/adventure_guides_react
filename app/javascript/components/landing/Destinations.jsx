@@ -6,7 +6,7 @@ function Destinations() {
   const [destinations, setDestinations] = useState([])
 
   useEffect(() => {
-    axios.get('/destinations.json')
+    axios.get('/api/v1/destinations')
       .then(response => {
         console.log("API DATA:", response.data)
         setDestinations(response.data)
