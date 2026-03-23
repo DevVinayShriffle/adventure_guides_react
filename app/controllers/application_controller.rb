@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_user!(*args)
+    byebug
     if user_signed_in?
       super
     else
@@ -28,6 +29,17 @@ class ApplicationController < ActionController::Base
       render inline: "<script>setTimeout(function(){ Turbo.visit('#{new_user_session_path}') }, 3000);</script>", layout: true
     end
   end
+
+  # def authenticate_api_v1_user!(*args)
+  #   # byebug
+  #   if user_signed_in?
+  #     super
+  #   else
+  #     flash[:notice] = "You need to login or sign up before continuing"
+      
+  #     render inline: "<script>setTimeout(function(){ Turbo.visit('#{new_user_session_path}') }, 3000);</script>", layout: true
+  #   end
+  # end
 
   private
 
