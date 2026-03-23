@@ -29,9 +29,9 @@ function Navbar() {
         </div>
 
         {/* <!-- AUTH LINKS --> */}
-        <div className="flex flex-col gap-2 bg-gray-300 absolute right-10 top-13 z-10 rounded p-2 border-1 border-gray-400">
+        <div className="flex flex-col gap-2 bg-gray-300 absolute right-10 top-12 z-10 rounded p-2 border-1 border-gray-400">
           {/* <% if user_signed_in? %> */}
-          <NavLink>Dashboard</NavLink>
+          <NavLink to={"/dashboard"}>Dashboard</NavLink>
           <NavLink to={"/"}>Logout</NavLink>
           {/* if user no signed in */}
           <NavLink to={"/signup"}>Sign Up</NavLink>

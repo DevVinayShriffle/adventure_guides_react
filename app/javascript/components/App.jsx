@@ -4,6 +4,7 @@ import Home from "./landing/Home";
 import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
 import Buses from "./buses/Buses";
+import Bus from "./buses/Bus";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Route path='/signup' element={<SignUp />} />
       <Route path='/login' element={<Login />} />
       <Route path='/buses' element={<Buses />} />
+      <Route path="/buses/:id" element={<Bus />} />
     </Routes>
   )
 };

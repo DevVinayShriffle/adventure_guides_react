@@ -1,21 +1,25 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function Buses() {
   const location=useLocation();
   const {destination} = location.state || {};
   const[buses, setBuses]=useState([]);
+  const navigate=useNavigate();
 
   useEffect(()=>{
-    axios.get('/api/v1/buses', {params: {destination_id: destination.id}})
-    .then(response=>{
-      setBuses(response.data)})
-    .catch(error=>console.error(`Error Fetching data: ${error}`))
-  },[destination])
+    if (destination && destination.id){
+      axios.get('/api/v1/buses', {params: {destination_id: destination.id}})
+      .then(response=>{
+        setBuses(response.data)})
+      .catch(error=>console.error(`Error Fetching data: ${error}`))
+    }
+    },[destination])
 
   function handleBus(bus) {
     console.log(bus)
+    navigate(`/buses/${bus.id}`, {state: {bus}})
   }
 
   return (
@@ -33,7 +37,7 @@ function Buses() {
             ))}
           </div> */}
           {buses.map((bus, index)=>(
-            <div className="border p-3 rounded shadow bg-white w-65 h-[420px] flex flex-col justify-between"
+            <div key={index} className="border p-3 rounded shadow bg-white w-65 h-[420px] flex flex-col justify-between"
               onClick={()=>handleBus(bus)}>
 
               <div className="h-40 flex items-center justify-center bg-gray-100 rounded">
