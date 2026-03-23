@@ -89,21 +89,23 @@ Rails.application.routes.draw do
   #API routes for backend
   namespace :api do
     namespace :v1 do
-      devise_for :users, path: '', path_names: {
-        sign_in: 'login',
-        sign_out: 'logout',
-        registration: 'signup'
-      }, controllers: {
-        registrations: 'users/registrations',
-        sessions: 'users/sessions',
-        passwords: 'users/passwords'
-      }
+      scope :users do
+        devise_for :users, path: '', path_names: {
+          sign_in: 'login',
+          sign_out: 'logout',
+          registration: 'signup'
+        }, controllers: {
+          registrations: 'users/registrations',
+          sessions: 'users/sessions',
+          passwords: 'users/passwords'
+        }
+      end
 
       resources :destinations, only: [:index, :show], controller: '/destinations' do
         resources :buses, only: [:index]
       end
 
-      resources :buses, only: [:index, :show]
+      resources :buses, only: [:index, :show], controller: '/buses'
 
       resources :schedules, only: [:index, :show]
 
@@ -122,11 +124,11 @@ Rails.application.routes.draw do
       end
 
       namespace :guide do
-        resources :buses do
-          resources :bus_stops
+        resources :buses, controller: '/guide/buses' do
+          resources :bus_stops, controller: '/guide/bus_stops'
           # resources :schedules
         end
-        resources :schedules
+        resources :schedules, controller: '/guide/schedules'
       end
 
       get '/dashboard', to: 'dashboards#index', as: 'dashboard'
