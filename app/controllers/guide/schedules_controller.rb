@@ -1,5 +1,6 @@
 class Guide::SchedulesController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
+  before_action :authenticate_api_v1_user!
   before_action :require_guide
   before_action :set_schedule, only: [:update, :destroy, :edit]
 
@@ -34,10 +35,12 @@ class Guide::SchedulesController < ApplicationController
     @schedule[:destination_id] = Destination.where("? ILIKE CONCAT('%', name, '%')", target.first.name).select(:id).first.id
     schedule = @bus.schedules.create!(@schedule)
 
-    respond_to do |format|
-      format.html { redirect_to guide_schedules_path, notice: "Bus schedule created." }
-      format.json { render json: schedule, message: "Bus schedule created.", status: :created }
-    end
+    # respond_to do |format|
+    #   format.html { redirect_to guide_schedules_path, notice: "Bus schedule created." }
+    #   format.json { render json: schedule, message: "Bus schedule created.", status: :created }
+    # end
+
+    render json: schedule, message: "Bus schedule created.", status: :created
   end
 
   def edit
@@ -65,7 +68,8 @@ class Guide::SchedulesController < ApplicationController
   private
 
   def require_guide
-    render json: { message: "Access denied." }, status: :forbidden unless current_user&.guide?
+    @current_user = current_api_v1_user
+    render json: { message: "Access denied." }, status: :forbidden unless @current_user&.guide?
   end
 
   def schedules_params

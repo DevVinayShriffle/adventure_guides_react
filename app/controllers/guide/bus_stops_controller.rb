@@ -1,6 +1,7 @@
 module Guide
   class BusStopsController < ApplicationController
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
+    before_action :authenticate_api_v1_user!
     before_action :require_guide
     before_action :set_bus
     before_action :set_bus_stop, only: [:show, :update, :destroy]
@@ -74,7 +75,8 @@ module Guide
     end
 
     def require_guide
-      render json: { message: "Access denied." }, status: :forbidden unless current_user&.guide?
+      @current_user = current_api_v1_user
+      render json: { message: "Access denied." }, status: :forbidden unless @current_user&.guide?
     end
   end
 end

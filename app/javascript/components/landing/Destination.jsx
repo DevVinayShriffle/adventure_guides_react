@@ -1,8 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Destination({ destination }) {
+  const navigate = useNavigate();
+
+  function handleDestination(destination) {
+    navigate('/buses', {state: {destination}})
+  }
+
   return (
-    <div className="border p-3 rounded shadow bg-white w-65 h-[420px] flex flex-col justify-between">
+    <div className="border p-3 rounded shadow bg-white w-65 h-[420px] flex flex-col justify-between"
+      onClick={()=>handleDestination(destination)}>
 
       <div className="h-40 flex items-center justify-center bg-gray-100 rounded">
         <p>No images attached.</p>

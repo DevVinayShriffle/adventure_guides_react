@@ -99,3 +99,5 @@ Rails.application.configure do
     namespace: "my_app_cache"
   }
 end
+
+Rails.application.routes.default_url_options[:host] = 'localhost:3000'

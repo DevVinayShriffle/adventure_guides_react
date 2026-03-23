@@ -8,7 +8,6 @@ function Destinations() {
   useEffect(() => {
     axios.get('/api/v1/destinations')
       .then(response => {
-        console.log("API DATA:", response.data)
         setDestinations(response.data)
       })
       .catch(error => console.error('Error fetching data:', error))

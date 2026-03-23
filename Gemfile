@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -71,10 +71,10 @@ gem "jsbundling-rails", "~> 1.3"
 gem "tailwindcss-rails", "~> 4.4"
 gem 'pg'
 gem 'active_model_serializers'
-gem "bcrypt", "~> 3.1.7"
 gem "byebug"
 gem 'devise'
 gem 'devise-jwt'
+gem 'jsonapi-serializer'
 gem 'sidekiq'
 gem "redis", ">= 4.0.1"
 # gem 'whenever', require: false

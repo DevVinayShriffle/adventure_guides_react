@@ -2,6 +2,7 @@ class BusesController < ApplicationController
   before_action :set_bus, only: [:show]
 
   def index
+    # byebug
     if params[:destination_id].present?
       @destination = Destination.find_by(id: params[:destination_id])
 
@@ -16,12 +17,13 @@ class BusesController < ApplicationController
       @buses = Bus.all.order(created_at: :desc)
     end
 
-    respond_to do |format|
-      format.html
-      format.json do
-        render json: @buses
-      end
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.json do
+    #     render json: @buses
+    #   end
+    # end
+    render json: @buses
   end
 
   def show
