@@ -1,10 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function Bus() {
   const {id}=useParams()
   const[bus, setBus]=useState(null)
+  const navigate=useNavigate()
+
+  const handleGoBack = ()=>{
+    navigate(-1)
+  }
   
   useEffect(()=>{
     axios.get(`/api/v1/buses/${id}`)
@@ -12,7 +17,6 @@ function Bus() {
       setBus(()=>(response.data))
     }).catch(error=>console.error(`Error fetching API : ${error}`))
   },[id])
-  console.log("Fetched bus data : ", bus);
   
   if(!bus){
     return (
@@ -25,6 +29,9 @@ function Bus() {
   return (
     <>
       <div className='m-auto w-full p-3 '>
+        <button className='bg-black text-white px-3 py-2 rounded' onClick={handleGoBack}>
+          Go Back
+        </button>
         <p>Bus Name: {bus.name}</p>
         <p>Type: {bus.bus_type}</p>
         <p>Capacity: {bus.capacity}</p>

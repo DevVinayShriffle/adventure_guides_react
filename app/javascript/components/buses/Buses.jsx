@@ -7,6 +7,10 @@ function Buses() {
   const[buses, setBuses]=useState([]);
   const navigate=useNavigate();
   
+  const handleGoBack = ()=>{
+    navigate(-1)
+  }
+
   useEffect(()=>{
     axios.get('/api/v1/buses', {params: {destination_id: id}})
     .then(response=>{
@@ -28,6 +32,9 @@ function Buses() {
             <p className="text-2xl font-semibold">Start Your Adventure</p>
             <p className="text-gray-500">Here’s Our Recommended Travel Destinations</p>
           </div>
+          <button className='bg-black text-white px-3 py-2 rounded' onClick={handleGoBack}>
+            Go Back
+          </button>
 
           {/* <div className="grid grid-cols-3 gap-6">
             {destinations.map((destination) => (

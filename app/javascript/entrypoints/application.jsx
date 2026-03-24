@@ -8,11 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const rootElement = document.getElementById('root'); // Make sure this #app exists in your Rails layout
 
   if (rootElement) {
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
+    try{
+      root.render(
+        <React.StrictMode>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </React.StrictMode>
+      )
+    }catch(error){
+      console.error(`Error rendering root div : ${error}`)
+      rootElement.innerHTML =
+      `<div style="padding: 20px; font-family: sans-serif; color: red;">
+        <h1>Render Error</h1>
+        <pre>${error.message}</pre>
+      </div>`;
+    }
   }
 });
