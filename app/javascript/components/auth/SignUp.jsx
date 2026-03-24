@@ -3,8 +3,9 @@ import {useState} from 'react'
 import axios from 'axios'
 
 function SignUp() {
+  // const form=new FormData()
   const[formData, setFormData]=useState(
-    {
+    {user:{
       name: '',
       email: '',
       password: '',
@@ -12,21 +13,27 @@ function SignUp() {
       phone: '',
       avatar: '',
       role: 'tourist'
-    }
+    }}
   )
 
   function handleInput(e) {
     const{name, value}=e.target
-    setFormData((pre)=>({...pre, [name]: value}))
+    setFormData((pre)=>({...pre, user:{...pre.user, [name]: value}}))
+  }
+
+  function handleAvatar(e) {
+    // const{name, value}=e.target
+    setFormData((pre)=>({...pre, user:{...pre.user, avatar: e.target.files[0]}}))
   }
 
   const handleSubmit=async (e)=>{
     console.log(formData)
     e.preventDefault()
     try {
-      const response=await axios.post('/api/v1/users/signup', {
-        user: formData
-      })
+      const form = {user: {...formData}}
+      console.log(formData);
+      
+      const response=await axios.post('/api/v1/users/signup', formData)
       console.log('Signup Successful: ', response.data);
     }catch(error){
       console.error('signup error: ', error.response?.data || error.message)
@@ -115,7 +122,7 @@ function SignUp() {
               id="avatar"
               name="avatar"
               accept="image/png, image/jpeg" 
-              onChange={handleInput}
+              onChange={handleAvatar}
             />
           </div>
 

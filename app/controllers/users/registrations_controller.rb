@@ -1,7 +1,25 @@
 require_dependency 'user_serializer'
 class Users::RegistrationsController < Devise::RegistrationsController
-  respond_to :json, :html, :turbo_stream
-  # byebug
+  # respond_to :json, :html, :turbo_stream
+  respond_to :json
+  skip_before_action :verify_authenticity_token
+  
+  def create
+    # byebug
+    build_resource(sign_up_params)
+
+    if resource.save
+      render json: {
+        message: "User created successfully",
+        user: resource
+      }, status: :created
+    else
+      render json: {
+        errors: resource.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     if current_user.destroy
       respond_to do |format|
@@ -13,71 +31,71 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def respond_with(resource, _opts = {})
-    return if request.get?
-    byebug
-    return if (resource.errors.any? && action_name == "update")
-    if resource.persisted?
-      @token = request.env['warden-jwt_auth.token']
-      headers['Authorization'] = @token
+  # def respond_with(resource, _opts = {})
+  #   return if request.get?
+  #   byebug
+  #   return if (resource.errors.any? && action_name == "update")
+  #   if resource.persisted?
+  #     @token = request.env['warden-jwt_auth.token']
+  #     headers['Authorization'] = @token
       
-      # if resource[:updated_at] == Time.now
-      # respond_to do |format|
+  #     # if resource[:updated_at] == Time.now
+  #     # respond_to do |format|
 
-      #   # SIGNUP → REDIRECT
-      #   if action_name == "create"
-      #     flash[:notice] = "User Registered successfully."
-      #     format.html { redirect_to dashboard_path }
-      #     format.turbo_stream { redirect_to dashboard_path }
-      #   end
+  #     #   # SIGNUP → REDIRECT
+  #     #   if action_name == "create"
+  #     #     flash[:notice] = "User Registered successfully."
+  #     #     format.html { redirect_to dashboard_path }
+  #     #     format.turbo_stream { redirect_to dashboard_path }
+  #     #   end
 
-      #   # UPDATE → TURBO STREAM
-      #   if action_name == "update"
-      #     flash.now[:notice] = "Profile updated successfully."
-      #     format.turbo_stream do
-      #       render turbo_stream: [
-      #         turbo_stream.replace(
-      #           "sidebar_avatar",
-      #           partial: "dashboards/sidebar_avatar",
-      #           locals: { user: current_user }
-      #         ),
-      #         turbo_stream.replace("flash-messages", partial: "shared/flash_messages"),
-      #         turbo_stream.update(
-      #           "dashboard_content",
-      #           render_to_string(
-      #             inline: %{
-      #               <h2 class="text-2xl font-semibold text-gray-600">
-      #                 Welcome #{current_user.name}
-      #               </h2>
-      #               <p class="mt-2 text-gray-500">
-      #                 Profile updated successfully.
-      #               </p>
-      #             }
-      #           )
-      #         )
-      #       ]
-      #     end
+  #     #   # UPDATE → TURBO STREAM
+  #     #   if action_name == "update"
+  #     #     flash.now[:notice] = "Profile updated successfully."
+  #     #     format.turbo_stream do
+  #     #       render turbo_stream: [
+  #     #         turbo_stream.replace(
+  #     #           "sidebar_avatar",
+  #     #           partial: "dashboards/sidebar_avatar",
+  #     #           locals: { user: current_user }
+  #     #         ),
+  #     #         turbo_stream.replace("flash-messages", partial: "shared/flash_messages"),
+  #     #         turbo_stream.update(
+  #     #           "dashboard_content",
+  #     #           render_to_string(
+  #     #             inline: %{
+  #     #               <h2 class="text-2xl font-semibold text-gray-600">
+  #     #                 Welcome #{current_user.name}
+  #     #               </h2>
+  #     #               <p class="mt-2 text-gray-500">
+  #     #                 Profile updated successfully.
+  #     #               </p>
+  #     #             }
+  #     #           )
+  #     #         )
+  #     #       ]
+  #     #     end
 
-      #     format.html { redirect_to dashboard_path }
-      #   end
+  #     #     format.html { redirect_to dashboard_path }
+  #     #   end
 
-      #   format.json do
-      #     render json: {
-      #       status: {
-      #         code: 200,
-      #         message: "Success",
-      #         token: "Bearer #{@token}",
-      #         data: { user: UserSerializer.new(resource) }
-      #       }
-      #     }
-      #   end
-      # end
+  #     #   format.json do
+  #     #     render json: {
+  #     #       status: {
+  #     #         code: 200,
+  #     #         message: "Success",
+  #     #         token: "Bearer #{@token}",
+  #     #         data: { user: UserSerializer.new(resource) }
+  #     #       }
+  #     #     }
+  #     #   end
+  #     # end
 
-      render json: {status: {code: 200, message: "Success", token: "Bearer #{@token}", data: { user: UserSerializer.new(resource) }}}
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
+  #     render json: {status: {code: 200, message: "Success", token: "Bearer #{@token}", data: { user: UserSerializer.new(resource) }}}
+  #   else
+  #     render :new, status: :unprocessable_entity
+  #   end
+  # end
 
   # def update_resource(resource, params)
   #   if params[:password].blank? && params[:password_confirmation].blank?

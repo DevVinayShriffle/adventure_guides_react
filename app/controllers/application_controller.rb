@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   include ExceptionHandler
-  protect_from_forgery with: :null_session, if: -> { request.format.json? }
+  protect_from_forgery with: :null_session
 
   before_action :set_active_storage_current_host
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -19,16 +19,16 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone, :avatar])
   end
   
-  def authenticate_user!(*args)
-    byebug
-    if user_signed_in?
-      super
-    else
-      flash[:notice] = "You need to login or sign up before continuing"
+  # def authenticate_user!(*args)
+  #   byebug
+  #   if user_signed_in?
+  #     super
+  #   else
+  #     flash[:notice] = "You need to login or sign up before continuing"
       
-      render inline: "<script>setTimeout(function(){ Turbo.visit('#{new_user_session_path}') }, 3000);</script>", layout: true
-    end
-  end
+  #     render inline: "<script>setTimeout(function(){ Turbo.visit('#{new_user_session_path}') }, 3000);</script>", layout: true
+  #   end
+  # end
 
   # def authenticate_api_v1_user!(*args)
   #   # byebug
