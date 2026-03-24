@@ -5,7 +5,8 @@ function Destination({ destination }) {
   const navigate = useNavigate();
 
   function handleDestination(destination) {
-    navigate('/buses', {state: {destination}})
+    // navigate('/buses', {state: {destination}})
+    navigate(`/destinations/${destination.id}/buses`)
   }
 
   return (

@@ -1,25 +1,23 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function Buses() {
-  const location=useLocation();
-  const {destination} = location.state || {};
+  const {id}=useParams()
   const[buses, setBuses]=useState([]);
   const navigate=useNavigate();
-
+  
   useEffect(()=>{
-    if (destination && destination.id){
-      axios.get('/api/v1/buses', {params: {destination_id: destination.id}})
-      .then(response=>{
-        setBuses(response.data)})
-      .catch(error=>console.error(`Error Fetching data: ${error}`))
-    }
-    },[destination])
+    axios.get('/api/v1/buses', {params: {destination_id: id}})
+    .then(response=>{
+      setBuses([...response.data])
+      console.log(buses)
+    }).catch(error=>console.error(`Error Fetching data: ${error}`))
+  },[id])
 
   function handleBus(bus) {
     console.log(bus)
-    navigate(`/buses/${bus.id}`, {state: {bus}})
+    navigate(`/buses/${bus.id}`)
   }
 
   return (

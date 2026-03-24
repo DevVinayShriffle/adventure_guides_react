@@ -3,6 +3,7 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
+    byebug
     self.resource = warden.authenticate(auth_options)
 
     if resource
@@ -21,10 +22,11 @@ class Users::SessionsController < Devise::SessionsController
     @token = request.env['warden-jwt_auth.token']
     headers['Authorization'] = @token
     
-    respond_to do |format|
-      format.html { redirect_to dashboard_path, notice: 'User Logged in successfully.' }
-      format.json { render json: {status: { code: 200, message: 'Logged in successfully.', token: "Bearer #{@token}", data: {user: UserSerializer.new(resource)} }}, status: :ok }
-    end  
+    # respond_to do |format|
+    #   format.html { redirect_to dashboard_path, notice: 'User Logged in successfully.' }
+    #   format.json { render json: {status: { code: 200, message: 'Logged in successfully.', token: "Bearer #{@token}", data: {user: UserSerializer.new(resource)} }}, status: :ok }
+    # end 
+    render json: {status: { code: 200, message: 'Logged in successfully.', token: "Bearer #{@token}", data: {user: UserSerializer.new(resource)} }}, status: :ok 
   end
 
   def respond_to_on_destroy(resource=nil)

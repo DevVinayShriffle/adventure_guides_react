@@ -1,6 +1,6 @@
 module Guide
   class BusesController < ApplicationController
-    byebug
+    # byebug
     # before_action :authenticate_user!
     before_action :authenticate_api_v1_user!
     before_action :require_guide
@@ -34,7 +34,7 @@ module Guide
     end
 
     def create
-      byebug
+      # byebug
       @bus = bus_params
       @bus[:user_id] = @current_user.id
       @bus = Bus.create!(@bus)

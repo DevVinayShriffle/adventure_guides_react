@@ -9,8 +9,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.save
+      sign_in(resource_name, resource)
+      @token = request.env['warden-jwt_auth.token']
+      headers['Authorization'] = @token
       render json: {
         message: "User created successfully",
+        token: "Bearer #{@token}",
         user: resource
       }, status: :created
     else
