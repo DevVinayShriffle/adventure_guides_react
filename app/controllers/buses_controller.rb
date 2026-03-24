@@ -27,22 +27,28 @@ class BusesController < ApplicationController
   end
 
   def show
+    # byebug
     @bus = Bus.includes(:bus_stops, schedules: :destination).find_by(id: params[:id])
-
-    unless @bus
-      redirect_to buses_path, alert: "Bus not found"
+    if @bus.present?
+      render json: @bus, status: :ok
+    else
+      render json: { message: "No bus found." }, status: :ok
     end
     
-    respond_to do |format|
-      format.html
-      format.json do
-        if @bus.present?
-          render json: @bus, status: :ok
-        else
-          render json: { message: "No bus found." }, status: :ok
-        end
-      end
-    end
+    # unless @bus
+    #   redirect_to buses_path, alert: "Bus not found"
+    # end
+    
+    # respond_to do |format|
+    #   format.html
+    #   format.json do
+    #     if @bus.present?
+    #       render json: @bus, status: :ok
+    #     else
+    #       render json: { message: "No bus found." }, status: :ok
+    #     end
+    #   end
+    # end
   end
 
   private

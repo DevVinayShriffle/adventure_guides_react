@@ -11,12 +11,12 @@ function Buses() {
     axios.get('/api/v1/buses', {params: {destination_id: id}})
     .then(response=>{
       setBuses([...response.data])
-      console.log(buses)
+      // console.log(buses)
     }).catch(error=>console.error(`Error Fetching data: ${error}`))
   },[id])
 
   function handleBus(bus) {
-    console.log(bus)
+    // console.log(bus)
     navigate(`/buses/${bus.id}`)
   }
 

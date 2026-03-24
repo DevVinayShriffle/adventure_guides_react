@@ -1,13 +1,30 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 function Bus() {
-  const location = useLocation()
-  const {bus} = location.state || {}
+  const {id}=useParams()
+  const[bus, setBus]=useState(null)
   
+  useEffect(()=>{
+    axios.get(`/api/v1/buses/${id}`)
+    .then(response=>{
+      setBus(()=>(response.data))
+    }).catch(error=>console.error(`Error fetching API : ${error}`))
+  },[id])
+  console.log("Fetched bus data : ", bus);
+  
+  if(!bus){
+    return (
+    <>
+      <p>Loading bus....</p>
+    </>
+    )
+  }
+
   return (
     <>
-      <div className='m-auto w-full p-3'>
+      <div className='m-auto w-full p-3 '>
         <p>Bus Name: {bus.name}</p>
         <p>Type: {bus.bus_type}</p>
         <p>Capacity: {bus.capacity}</p>
@@ -17,14 +34,12 @@ function Bus() {
             <img key={index} src={image} className='w-50 h-50 rounded' />
           ))
         }
-
         {bus.bus_stops.map((stop, index)=>(
           <div key={index} className='flex justify-around items-center gap-2'>
             <p>{stop.name}</p>
             <p> {stop.stop_type}</p>
           </div>
         ))}
-
         {
           bus.schedules.map((schedule, index)=>(
             <div key={index} className='border-4 border-blue-500 border-dashed rounded-lg p-4'>
