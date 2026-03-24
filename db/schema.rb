@@ -100,7 +100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_20_082449) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "jti"
+    t.string "jti", default: "", null: false
     t.string "name", null: false
     t.string "phone", limit: 15
     t.datetime "remember_created_at"
@@ -109,7 +109,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_20_082449) do
     t.integer "role", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["jti"], name: "index_users_on_jti"
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
