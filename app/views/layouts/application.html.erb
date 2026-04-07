@@ -25,7 +25,7 @@
     <%#= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'application.jsx' %>
-    <%= vite_react_refresh_tag %> <%# Add this line %>
+    <%= vite_react_refresh_tag %>
     <meta name="google" content="notranslate" />
 
     <!--
@@ -39,7 +39,7 @@
     -->
 
     <%#= vite_client_tag %>
-    <%#= vite_javascript_tag 'application' %>
+    <%= vite_javascript_tag 'application' %>
     <!--
       If using a TypeScript entrypoint file:
         vite_typescript_tag 'application'

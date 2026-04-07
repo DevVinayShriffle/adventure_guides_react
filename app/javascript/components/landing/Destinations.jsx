@@ -6,13 +6,17 @@ function Destinations() {
   const [destinations, setDestinations] = useState([])
 
   useEffect(() => {
-    axios.get('/api/v1/destinations')
+    axios.get('/api/v1/destinations', {
+      headers: {
+        Accept: "application/json"
+      }
+    })
       .then(response => {
         setDestinations(response.data)
       })
       .catch(error => console.error('Error fetching data:', error))
   }, [])
-
+  // console.log(destinations)
   return (
     <div className="px-20 py-10">
       <div className="mb-8">
@@ -21,8 +25,8 @@ function Destinations() {
       </div>
 
       <div className="grid grid-cols-3 gap-6">
-        {destinations.map((destination) => (
-          <Destination key={destination.id} destination={destination} />
+        {destinations.map((destination, index) => (
+          <Destination key={index} destination={destination} />
         ))}
       </div>
     </div>
